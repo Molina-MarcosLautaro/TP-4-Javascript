@@ -1,13 +1,17 @@
-6- Crear una clase Libro que contenga al menos las siguientes propiedades:
-ISBN
-Título
-Autor
-Número de páginas
+7- Nos piden realizar una agenda telefónica de contactos.
 
-Crear sus respectivos métodos get y set correspondientes para cada propiedad. Crear el método mostrarLibro() para mostrar la información relativa al libro con el siguiente formato:
+Un contacto está definido por un nombre y un teléfono. Se considera que un contacto es igual a otro cuando sus nombres son iguales.
 
-“El libro xxx con ISBN xxx creado por el autor xxx tiene páginas xxx”
+Una agenda de contactos está formada por un conjunto de contactos. Se podrá crear de dos formas, indicando nosotros el tamaño o con un tamaño por defecto (10).
 
-Crear al menos 2 objetos libros y utilizar el método mostrarLibro();
-Por último, indicar cuál de los 2 objetos “libros” tiene más páginas.
+Las acciones que se pueden realizar con la agenda serán los siguientes:
 
+aniadirContacto(Contacto): Añade un contacto a la agenda, sino la agenda no puede almacenar más contactos indicar por pantalla.
+existeContacto(Contacto): indica si el contacto pasado existe o no.
+listarContactos(): Lista toda la agenda
+buscarContacto(nombre): busca un contacto por su nombre y muestra su teléfono.
+eliminarContacto(Contacto c): elimina el contacto de la agenda, indica si se ha eliminado o no por pantalla
+agendaLlena(): indica si la agenda está llena.
+huecosLibres(): indica cuántos contactos más podemos ingresar.
+
+Crea un menú con opciones que serán seleccionadas por el usuario usando un prompt, las salidas de las operaciones seleccionadas por el usuario se pueden mostrar en pantalla y/o  por consola.
