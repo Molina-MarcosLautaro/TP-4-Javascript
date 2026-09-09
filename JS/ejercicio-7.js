@@ -55,8 +55,70 @@ class Agenda {
             return;
         }
         document.write('<h3>📋 LISTA DE CONTACTOS</h3>')
-        this.listaDeContactos.forEach((contacto) => {
-            document.write(`Nombre: ${contacto.nombre}`)
-        })
+        this.listaDeContactos.forEach((contacto, index) => {
+            document.write(`Nombre: ${contacto.nombre} - Teléfono: ${contacto.telefono}<br>`);
+        });
+    }
+
+    // Busca un contacto por su nombre y devuelve su teléfono
+    buscarContacto(buscarNombre){
+        // .find() busca el objeto en el array que cumpla la condición
+        const contactoEncontrado = this.listaDeContactos.find(contacto => contacto.nombre.toLowerCase() === buscarNombre.toLowerCase());
+        if (contactoEncontrado){
+            document.write(`🔎 El teléfono de ${contactoEncontrado.nombre} es: ${contactoEncontrado.telefono}<br>`);
+            alert(`🔎 El teléfono de ${contactoEncontrado.nombre} es: ${contactoEncontrado.telefono}`)
+        }else{
+            alert(`❌ No se encontro el contacto ${buscarNombre} en la agenda.`)
+        }
+    }
+
+    // Elimina un contacto de la agenda
+    eliminarContacto(contactoAEliminar){
+        // Buscamos el índice (la posición) del contacto en el array
+    const indice = this.listaDeContactos.findIndex(contacto => contacto.nombre.toLowerCase() === contactoAEliminar.nombre.toLowerCase());
+
+    if (indice !== -1){
+        // .splice(posición, cuántos_eliminar) borra el elemento del array
+        this.listaDeContactos.splice(indice, 1);
+        document.write(`✅ Contacto ${contactoAEliminar.nombre} eliminado exitosamente.<br>`);
+        alert(`✅ Contacto ${contactoAEliminar.nombre} eliminado exitosamente.`);
+    }else{
+        alert(`❌ No se encontro el contacto ${contactoAEliminar.nombre} en la agenda.`);
+    }
     }
 }
+
+// 3. Clase persona
+
+// Inicializar la agenda con un límite de 10 contactos
+let preguntarLimite = prompt(`Ingrese el límite máximo de contactos para la agenda (por defecto es 10):`);
+let contactoMaximo = parseInt(preguntarLimite);
+if (isNaN(limiteMaximo) || limiteMaximo <= 0) {
+    limiteMaximo = 10; // Valor por defecto si el usuario no ingresa un número válido
+}
+
+// Creo la instancia de nuestra agenda
+const miAgenda = new Agenda(contactoMaximo);
+let opciones;
+
+// Bucle que mantiene vivo el menú hasta q se ingrese '7'
+do {
+    opciones = prompt(`Seleccione una opción:
+        1. Agregar contacto
+        2. Listar contactos
+        3. Buscar contacto
+        4. Eliminar contacto
+        5. Verificar si la agenda está llena
+        6. Verificar espacio disponible
+        7. Salir
+        Seleccione una opción del 1 al 7:`);
+
+        switch (opciones) {
+            case '1':
+                const nombre = prompt('Ingrese el nombre del contacto:');
+                const telefono = prompt('Ingrese el teléfono del contacto:');
+                const nuevoContacto = new Contacto(nombre, telefono);
+                miAgenda.agregarContacto(nuevoContacto);
+                break;
+        }
+}while
