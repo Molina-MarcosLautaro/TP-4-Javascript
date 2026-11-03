@@ -36,7 +36,7 @@ class Agenda {
             alert(`❌ La agenda está llena. No se puede agregar el contacto ${nuevoContacto.nombre}.`);
             return;
         }
-        if (this.existeContacto(nuevoContacto)){
+        if (this.existeContacto(nuevoContacto)) {
             document.write(`⚠️ El contacto ${nuevoContacto.nombre} ya existe en la agenda.<br>`);
             alert(`⚠️ El contacto ${nuevoContacto.nombre} ya existe en la agenda.`);
             return;
@@ -48,8 +48,8 @@ class Agenda {
     }
 
     // Lista toda la agenda 
-    listarContacto(){
-        if (this.listaDeContactos.length === 0){
+    listarContacto() {
+        if (this.listaDeContactos.length === 0) {
             document.write('📭 La agenda está vacía.<br>');
             alert('📭 La agenda esta vacia.');
             return;
@@ -61,30 +61,30 @@ class Agenda {
     }
 
     // Busca un contacto por su nombre y devuelve su teléfono
-    buscarContacto(buscarNombre){
+    buscarContacto(buscarNombre) {
         // .find() busca el objeto en el array que cumpla la condición
         const contactoEncontrado = this.listaDeContactos.find(contacto => contacto.nombre.toLowerCase() === buscarNombre.toLowerCase());
-        if (contactoEncontrado){
+        if (contactoEncontrado) {
             document.write(`🔎 El teléfono de ${contactoEncontrado.nombre} es: ${contactoEncontrado.telefono}<br>`);
             alert(`🔎 El teléfono de ${contactoEncontrado.nombre} es: ${contactoEncontrado.telefono}`)
-        }else{
+        } else {
             alert(`❌ No se encontro el contacto ${buscarNombre} en la agenda.`)
         }
     }
 
     // Elimina un contacto de la agenda
-    eliminarContacto(contactoAEliminar){
+    eliminarContacto(contactoAEliminar) {
         // Buscamos el índice (la posición) del contacto en el array
-    const indice = this.listaDeContactos.findIndex(contacto => contacto.nombre.toLowerCase() === contactoAEliminar.nombre.toLowerCase());
+        const indice = this.listaDeContactos.findIndex(contacto => contacto.nombre.toLowerCase() === contactoAEliminar.nombre.toLowerCase());
 
-    if (indice !== -1){
-        // .splice(posición, cuántos_eliminar) borra el elemento del array
-        this.listaDeContactos.splice(indice, 1);
-        document.write(`✅ Contacto ${contactoAEliminar.nombre} eliminado exitosamente.<br>`);
-        alert(`✅ Contacto ${contactoAEliminar.nombre} eliminado exitosamente.`);
-    }else{
-        alert(`❌ No se encontro el contacto ${contactoAEliminar.nombre} en la agenda.`);
-    }
+        if (indice !== -1) {
+            // .splice(posición, cuántos_eliminar) borra el elemento del array
+            this.listaDeContactos.splice(indice, 1);
+            document.write(`✅ Contacto ${contactoAEliminar.nombre} eliminado exitosamente.<br>`);
+            alert(`✅ Contacto ${contactoAEliminar.nombre} eliminado exitosamente.`);
+        } else {
+            alert(`❌ No se encontro el contacto ${contactoAEliminar.nombre} en la agenda.`);
+        }
     }
 }
 
@@ -113,12 +113,73 @@ do {
         7. Salir
         Seleccione una opción del 1 al 7:`);
 
-        switch (opciones) {
-            case '1':
-                const nombre = prompt('Ingrese el nombre del contacto:');
-                const telefono = prompt('Ingrese el teléfono del contacto:');
-                const nuevoContacto = new Contacto(nombre, telefono);
+    switch (opciones) {
+        case '1':
+            let nombre = prompt('Ingrese el nombre del contacto:');
+            let telefono = prompt('Ingrese el teléfono del contacto:');
+            if (nombre && telefono) {
+                let nuevoContacto = new Contacto(nombre, telefono);
                 miAgenda.agregarContacto(nuevoContacto);
-                break;
-        }
-}while
+            } else {
+                alert("⚠️ El nombre y el teléfono son obligatorios.")
+            }
+            break;
+
+        case '2':
+            let verificarNombre = prompt('Ingrese el nombre a verificar');
+            if (verificarNombre) {
+                let contactoTemporal = new Contacto(verificarNombre, '')
+                if (miAgenda.existeContacto(contactoTemporal)) {
+                    alert(`✅ Si, "${verificarNombre}" existe en la agenda.`)
+                } else {
+                    alert(`⚠️ No, "${verificarNombre}" no existe en la agenda. `)
+                }
+            }
+            break;
+
+        case '3':
+            miAgenda.listarContacto();
+            break;
+
+        case '4':
+            let buscarNombre = prompt('Ingrese el nombre del contacto a buscar:');
+            if (buscarNombre) {
+                miAgenda.buscarContacto(buscarNombre);
+            }
+            break;
+
+        case '5':
+            let nombreAEliminar = prompt('Ingrese el nombre del contacto a eliminar:');
+            if (nombreAEliminar) {
+                let contactoAEliminar = new Contacto(nombreAEliminar, '');
+                miAgenda.eliminarContacto(contactoAEliminar);
+            }
+            break;
+
+        case '6':
+            if (miAgenda.agendaLlena()) {
+                alert('🔒 Sí, la agenda está llena.');
+            } else {
+                alert('🔓 No, todavía queda espacio disponible.');
+            }
+            break;
+
+        case '7':
+            let vacios = miAgenda.espacioDisponible();
+            alert(`📅 Espacio disponible: ${vacios}`);
+            break;
+
+        case '8':
+            alert('👋 ¡Gracias por usar la agenda! Saliendo del programa...');
+            break;
+
+        case null: // Si el usuario presiona "Cancelar" en el prompt del menú
+            opciones = '8';
+            alert('👋 Saliendo del programa...');
+            break;
+
+        default:
+            alert('⚠️ Opción no válida. Por favor, elija un número del 1 al 8.')
+            break;
+    }
+} while (opciones !== '8');
