@@ -8,7 +8,7 @@ class Contacto {
 
 // 2. Clase agenda
 class Agenda {
-    constructor(limiteMaximo = 10) {
+    constructor(limiteMaximo = 7) {
         this.limiteMaximo = limiteMaximo;
         this.listaDeContactos = [];
     }
@@ -32,17 +32,17 @@ class Agenda {
     // Añade un contacto a la agenda
     agregarContacto(nuevoContacto) {
         if (this.agendaLlena()) {
-            document.write(`❌ No se puede agregar el contacto ${nuevoContacto.nombre}. La agenda está llena.<br>`);
+            console.log(`❌ No se puede agregar el contacto ${nuevoContacto.nombre}. La agenda está llena.`);
             alert(`❌ La agenda está llena. No se puede agregar el contacto ${nuevoContacto.nombre}.`);
             return;
         }
         if (this.existeContacto(nuevoContacto)) {
-            document.write(`⚠️ El contacto ${nuevoContacto.nombre} ya existe en la agenda.<br>`);
+            console.log(`⚠️ El contacto ${nuevoContacto.nombre} ya existe en la agenda.`);
             alert(`⚠️ El contacto ${nuevoContacto.nombre} ya existe en la agenda.`);
             return;
         }
         this.listaDeContactos.push(nuevoContacto);
-        document.write(`✅ Contacto ${nuevoContacto.nombre} agregado exitosamente.<br>`);
+        console.log(`✅ Contacto ${nuevoContacto.nombre} agregado exitosamente.`);
         alert(`✅ Contacto ${nuevoContacto.nombre} agregado exitosamente.`);
         return;
     }
@@ -50,13 +50,13 @@ class Agenda {
     // Lista toda la agenda 
     listarContacto() {
         if (this.listaDeContactos.length === 0) {
-            document.write('📭 La agenda está vacía.<br>');
+            console.log('📭 La agenda está vacía.');
             alert('📭 La agenda esta vacia.');
             return;
         }
-        document.write('<h3>📋 LISTA DE CONTACTOS</h3>')
+        console.log('<h3>📋 LISTA DE CONTACTOS</h3>')
         this.listaDeContactos.forEach((contacto, index) => {
-            document.write(`Nombre: ${contacto.nombre} - Teléfono: ${contacto.telefono}<br>`);
+            console.log(`Nombre: ${contacto.nombre} - Teléfono: ${contacto.telefono}`);
         });
     }
 
@@ -65,7 +65,7 @@ class Agenda {
         // .find() busca el objeto en el array que cumpla la condición
         const contactoEncontrado = this.listaDeContactos.find(contacto => contacto.nombre.toLowerCase() === buscarNombre.toLowerCase());
         if (contactoEncontrado) {
-            document.write(`🔎 El teléfono de ${contactoEncontrado.nombre} es: ${contactoEncontrado.telefono}<br>`);
+            console.log(`🔎 El teléfono de ${contactoEncontrado.nombre} es: ${contactoEncontrado.telefono}`);
             alert(`🔎 El teléfono de ${contactoEncontrado.nombre} es: ${contactoEncontrado.telefono}`)
         } else {
             alert(`❌ No se encontro el contacto ${buscarNombre} en la agenda.`)
@@ -80,7 +80,7 @@ class Agenda {
         if (indice !== -1) {
             // .splice(posición, cuántos_eliminar) borra el elemento del array
             this.listaDeContactos.splice(indice, 1);
-            document.write(`✅ Contacto ${contactoAEliminar.nombre} eliminado exitosamente.<br>`);
+            console.log(`✅ Contacto ${contactoAEliminar.nombre} eliminado exitosamente.`);
             alert(`✅ Contacto ${contactoAEliminar.nombre} eliminado exitosamente.`);
         } else {
             alert(`❌ No se encontro el contacto ${contactoAEliminar.nombre} en la agenda.`);
@@ -90,15 +90,13 @@ class Agenda {
 
 // 3. Clase persona
 
-// Inicializar la agenda con un límite de 10 contactos
-let preguntarLimite = prompt(`Ingrese el límite máximo de contactos para la agenda (por defecto es 10):`);
-let contactoMaximo = parseInt(preguntarLimite);
-if (isNaN(limiteMaximo) || limiteMaximo <= 0) {
-    limiteMaximo = 10; // Valor por defecto si el usuario no ingresa un número válido
-}
+// Inicializar la agenda con un límite de 7 contactos
+let tamanoInput = prompt("Ingrese el tamaño de la agenda (Deje vacío para usar 7 por defecto):");
+let tamano = tamanoInput === "" || tamanoInput === null ? undefined : parseInt(tamanoInput);
 
 // Creo la instancia de nuestra agenda
-const miAgenda = new Agenda(contactoMaximo);
+const miAgenda = new Agenda(tamano);
+
 let opciones;
 
 // Bucle que mantiene vivo el menú hasta q se ingrese '7'
@@ -126,29 +124,17 @@ do {
             break;
 
         case '2':
-            let verificarNombre = prompt('Ingrese el nombre a verificar');
-            if (verificarNombre) {
-                let contactoTemporal = new Contacto(verificarNombre, '')
-                if (miAgenda.existeContacto(contactoTemporal)) {
-                    alert(`✅ Si, "${verificarNombre}" existe en la agenda.`)
-                } else {
-                    alert(`⚠️ No, "${verificarNombre}" no existe en la agenda. `)
-                }
-            }
+                miAgenda.listarContacto();
             break;
 
         case '3':
-            miAgenda.listarContacto();
-            break;
-
-        case '4':
-            let buscarNombre = prompt('Ingrese el nombre del contacto a buscar:');
-            if (buscarNombre) {
-                miAgenda.buscarContacto(buscarNombre);
+            let nombreABuscar = prompt('Ingrese el nombre del contacto a buscar:');
+            if (nombreABuscar){
+                miAgenda.buscarContacto(nombreABuscar);
             }
             break;
 
-        case '5':
+        case '4':
             let nombreAEliminar = prompt('Ingrese el nombre del contacto a eliminar:');
             if (nombreAEliminar) {
                 let contactoAEliminar = new Contacto(nombreAEliminar, '');
@@ -156,7 +142,7 @@ do {
             }
             break;
 
-        case '6':
+        case '5':
             if (miAgenda.agendaLlena()) {
                 alert('🔒 Sí, la agenda está llena.');
             } else {
@@ -164,22 +150,22 @@ do {
             }
             break;
 
-        case '7':
+        case '6':
             let vacios = miAgenda.espacioDisponible();
             alert(`📅 Espacio disponible: ${vacios}`);
             break;
 
-        case '8':
+        case '7':
             alert('👋 ¡Gracias por usar la agenda! Saliendo del programa...');
             break;
 
         case null: // Si el usuario presiona "Cancelar" en el prompt del menú
-            opciones = '8';
+            opciones = '7';
             alert('👋 Saliendo del programa...');
             break;
 
         default:
-            alert('⚠️ Opción no válida. Por favor, elija un número del 1 al 8.')
+            alert('⚠️ Opción no válida. Por favor, elija un número del 1 al 7.')
             break;
     }
-} while (opciones !== '8');
+} while (opciones !== '7');
